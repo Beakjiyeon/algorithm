@@ -7,7 +7,8 @@ n, m = map(int, input().split()) # 노드 개수, 간선 개수
 start = int(input()) # 시작 노드 번호
 
 # 그래프 생성
-graph = [[] for i in range(n + 1)]
+graph = [[] for _ in range(n + 1)]
+
 # 최단 거리 테이블 무한으로 초기화
 distance = [INF] * (n + 1) 
 
@@ -19,7 +20,8 @@ for _ in range(m):
 def dijkstra(start):
     q = []
     # 시작 노드 큐에 삽입
-    heapq.heappush(q, (0, start)) 
+    heapq.heappush(q, (0, start))
+    distance[start] = 0
 
     while q:
         # 힙에서 최단거리 노드 정보 꺼내기
@@ -44,5 +46,28 @@ for i in range(1, n +1):
     else:
         print(distance[i])
         
+'''
+# 입력
+6 11
+1
+1 2 2
+1 3 5
+1 4 1
+2 3 3
+2 4 2
+3 2 3
+3 6 5
+4 3 3
+4 5 1
+5 3 1
+5 6 2
 
+# 출력 
+0
+2
+3
+1
+2
+4
+'''
 
