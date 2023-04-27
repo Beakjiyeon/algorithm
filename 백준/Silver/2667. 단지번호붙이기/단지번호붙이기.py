@@ -28,9 +28,12 @@ if __name__ == '__main__':
     graph = []
     for _ in range(n):
         graph.append(list(map(int, sys.stdin.readline().strip())))
-        #graph.append(list(map(int, input())))
-    #print(graph)
+        
     target_counts = []  # 결과
+
+    # 상하좌우 이동 좌표
+    dx = [0, 0, -1, 1]
+    dy = [-1, 1, 0, 0]
 
     # graph[0][0] 부터 그래프 끝까지 이동 하며 1을 찾는다.
     visited = []  # 방문한 좌표 체크용
@@ -51,23 +54,15 @@ if __name__ == '__main__':
                     # print(f"현재 타겟: {(cy, cx)}")
                     target_count = target_count + 1
 
-                    # 인덱스 에러가 나지 않고 미방문 상태이고 1 값을 가지면 해당 좌표를 큐와 방문 기록에 넣는다.
-                    if cx + 1 < len(graph) and (cy, cx + 1) not in visited and graph[cy][cx + 1] == 1:
-                        # 오른 쪽으로 이동 가능
-                        queue.append((cy, cx + 1))
-                        visited.append((cy, cx + 1))
-                    if cx - 1 >= 0 and (cy, cx - 1) not in visited and graph[cy][cx - 1] == 1:
-                        # 왼 쪽으로 이동 가능
-                        queue.append((cy, cx - 1))
-                        visited.append((cy, cx - 1))
-                    if cy - 1 >= 0 and (cy - 1, cx) not in visited and graph[cy - 1][cx] == 1:
-                        # 위 쪽으로 이동 가능
-                        queue.append((cy - 1, cx))
-                        visited.append((cy - 1, cx))
-                    if cy + 1 < len(graph) and (cy + 1, cx) not in visited and graph[cy + 1][cx] == 1:
-                        # 아래 쪽으로 이동 가능
-                        queue.append((cy + 1, cx))
-                        visited.append((cy + 1, cx))
+                    for i in range(4):
+                        nx = cx + dx[i]
+                        ny = cy + dy[i]
+
+                        if nx < 0 or nx >= len(graph) or ny < 0 or ny >= len(graph) or (ny, nx) in visited:
+                            continue
+                        if graph[ny][nx] == 1:
+                            queue.append((ny, nx))
+                            visited.append((ny, nx))
 
                 # 특정 좌표와 연결된 좌표의 수를 저장한다.
                 target_counts.append(target_count)
