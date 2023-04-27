@@ -18,15 +18,18 @@
 
 
 if __name__ == '__main__':
+    import sys
     from collections import deque
+
     # 그래프 길이 입력 받기
-    n =int(input())
+    n = int(sys.stdin.readline())
 
     # 그래프 정보 입력 받기
     graph = []
     for _ in range(n):
-        graph.append(list(map(int, input())))
-
+        graph.append(list(map(int, sys.stdin.readline().strip())))
+        #graph.append(list(map(int, input())))
+    #print(graph)
     target_counts = []  # 결과
 
     # graph[0][0] 부터 그래프 끝까지 이동 하며 1을 찾는다.
