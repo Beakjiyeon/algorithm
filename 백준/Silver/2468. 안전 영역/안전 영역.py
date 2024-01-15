@@ -6,6 +6,8 @@ for i in range(n):
     for j in range(n):
         if graph[i][j] not in waters:
             waters.append(graph[i][j])
+
+# 노트: 아무 지역도 물에 잠기지 않을 수도 있다. 지역의 높이는 1부터 시작하므로 아무 지역도 물에 잠기지 않으려면 비의 양이 0인 경우 고려 
 waters.append(0)
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
