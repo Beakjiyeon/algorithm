@@ -1,74 +1,69 @@
-"""
-7
-0110100
-0110101
-1110101
-0000111
-0100000
-0111110
-0111000
+from collections import deque
 
-3
-7
-8
-9
-"""
+n = int(input())
 
-# 한점에 모여 있는 뭉치를 파고 들어 찾는 거니까 dfs
+# 그래프 정보 입력 받기
+graph = []
+visited = []
+for _ in range(n):
+    graph.append(list(map(int, input())))
+    #visited.append(list([False] * n))
+    visited.append([False] * n)
+# visited[0][0] = True
 
+#print(visited)
+def bfs(graph, visited, n):
+    dx = [-1, 1, 0, 0]  # 상, 하
+    dy = [0, 0, -1, 1]  # 좌, 우
 
-if __name__ == '__main__':
-    import sys
-    from collections import deque
+    queue = deque()
+    result = []
 
-    # 그래프 길이 입력 받기
-    n = int(sys.stdin.readline())
+    for a in range(0, n):
+        for b in range(0, n):
+            #print('###', x, y)
+            if graph[a][b] == 1 and visited[a][b] == False:
+                visited[a][b] = True
+                queue.append((a, b))
+                v_count = 0
 
-    # 그래프 정보 입력 받기
-    graph = []
-    for _ in range(n):
-        graph.append(list(map(int, sys.stdin.readline().strip())))
-        
-    target_counts = []  # 결과
-
-    # 상하좌우 이동 좌표
-    dx = [0, 0, -1, 1]
-    dy = [-1, 1, 0, 0]
-
-    # graph[0][0] 부터 그래프 끝까지 이동 하며 1을 찾는다.
-    visited = []  # 방문한 좌표 체크용
-    for y in range(len(graph)):  # 그래프가 가진 일차원 배열의 갯수
-        for x in range(len(graph[y])):  # 일차원 배열의 길이
-            # 해당 좌표 값이 1이고 방문한 적이 없으면
-            if graph[y][x] == 1 and (y, x) not in visited:
-                # 방문 체크 및 큐에 담는다.
-                visited.append((y, x))
-                queue = deque()
-                queue.append((y, x))
-
-                target_count = 0  # 방문 지점과 연결된 값이 1인 좌표의 수 : 뭉치 별로 세니까 0으로 초기화 한다.
-
-                # 큐가 빌 때까지 방문 한다.
                 while queue:
-                    cy, cx = queue.popleft()
-                    # print(f"현재 타겟: {(cy, cx)}")
-                    target_count = target_count + 1
-
+                    x, y = queue.popleft()
+                    v_count += 1
+                    #print('#####', x, y)
                     for i in range(4):
-                        nx = cx + dx[i]
-                        ny = cy + dy[i]
+                        nx = x + dx[i]
+                        ny = y + dy[i]
 
-                        if nx < 0 or nx >= len(graph) or ny < 0 or ny >= len(graph) or (ny, nx) in visited:
-                            continue
-                        if graph[ny][nx] == 1:
-                            queue.append((ny, nx))
-                            visited.append((ny, nx))
+                        if 0 <= nx < n and 0 <= ny < n:
+                            if graph[nx][ny] == 1 and visited[nx][ny] == False:
+                                # print('###=', nx, ny)
+                                visited[nx][ny] = True
+                                queue.append((nx, ny))
+                                # v_count += 1
+                #print(x, y, v_count)
+                result.append(v_count)
 
-                # 특정 좌표와 연결된 좌표의 수를 저장한다.
-                target_counts.append(target_count)
+    return result
 
-    # 결과를 출력 한다.
-    print(len(target_counts))
-    target_counts.sort()
-    for target_count in target_counts:
-        print(target_count)
+
+result = bfs(graph, visited, n)
+
+print(len(result))
+result.sort()
+for target_count in result:
+    print(target_count)
+
+
+'''
+5
+11110
+00000
+11100
+00000
+11000
+3
+2
+3
+3
+'''
