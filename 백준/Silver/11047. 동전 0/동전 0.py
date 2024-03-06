@@ -1,13 +1,13 @@
 n, k = map(int, input().split())
+coins = []
+for v in range(n):
+    coins.append(int(input()))
 
-coins = [int(input()) for _ in range(n)]
 coins.sort(reverse=True)
 
-count = 0
-left = k
+result = 0
 for coin in coins:
-    # 몫
-    count += left // coin
-    # 나머지
-    left = left % coin
-print(count)
+    if k // coin != 0:  # 몫
+        result += k // coin
+        k = k % coin  # 나머지
+print(result)
