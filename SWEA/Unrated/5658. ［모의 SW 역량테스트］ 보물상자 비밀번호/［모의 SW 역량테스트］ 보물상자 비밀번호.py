@@ -22,7 +22,7 @@ print(c, d, e)                          실수형 변수 3개 출력하는 예�
 print(f)                                문자열 1개 출력하는 예제
 '''
 
-# import sys
+#import sys
 
 '''
       아래의 구문은 input.txt 를 read only 형식으로 연 후,
@@ -35,7 +35,7 @@ print(f)                                문자열 1개 출력하는 예제
 
       단, 채점을 위해 코드를 제출하실 때에는 반드시 아래 구문을 지우거나 주석 처리 하셔야 합니다.
 '''
-# sys.stdin = open("sample_input.txt", "r")
+#sys.stdin = open("sample_input.txt", "r")
 
 T = int(input())
 
@@ -59,6 +59,9 @@ def calcualte_to_dec(r):
         sum += x * (16 ** i)
     return sum
 
+def hexa_to_decimal(hexa_num):
+    """16진수 수를 10진수로 반환"""
+    return int(hexa_num, base=16)
 
 for test_case in range(1, T + 1):
     # ///////////////////////////////////////////////////////////////////////////////////
@@ -66,21 +69,23 @@ for test_case in range(1, T + 1):
         이 부분에 여러분의 알고리즘 구현이 들어갑니다.
     '''
     N, K = map(int, input().split())
-    nums = input()
+    data = input()
     result = []
-    side = N // 4
-    # 0회전
-    result.extend(split_by_side(nums, side))
-    q = deque(nums)
-    # 1~w회전
-    for _ in range(N // 4 - 1):
-        q.rotate(1)
-        result.extend(split_by_side(''.join([*q]), side))
-    result = list(set(result))
 
-    fresult = []
-    for re in result:
-        fresult.append(calcualte_to_dec(re))
-    fresult.sort(reverse=True)
-    print(f"#{test_case} {fresult.pop(K - 1)}")
+    arr = []
+    # 회전 횟수 : 마지막 회전 횟수 = 0번 째 회전 횟수
+    for _ in range(N // 4):  # 회전 횟수
+        # 네 변에 할당
+        for i in range(0, N, N // 4):  # N // 4 : 한 변의 길이
+            arr.append(data[i: i + (N // 4)])
+
+        # 회전
+        data = data[-1] + data[:-1]
+
+    arr = list(set(arr))
+    re = list(map(hexa_to_decimal, arr))
+
+    re.sort(reverse=True)
+    print(f"#{test_case} {re.pop(K - 1)}")
+
     # ///////////////////////////////////////////////////////////////////////////////////
